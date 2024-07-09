@@ -3,7 +3,7 @@ import { assets, songsData } from "../assets/assets";
 import { PlayerContext } from "../context/PlayerContext";
 
 const Player = () => {
-  const { seekBar, seekBg, playStatus, play, pause, track, time } =
+  const { seekBar, seekBg, playStatus, play, pause, track, time, previous, next } =
     useContext(PlayerContext);
 
   return (
@@ -22,7 +22,7 @@ const Player = () => {
             src={assets.shuffle_icon}
             alt=""
           />
-          <img className="w-4 cursor-pointer" src={assets.prev_icon} alt="" />
+          <img onClick={previous} className="w-4 cursor-pointer" src={assets.prev_icon} alt="" />
           {playStatus ? (
             <img
               onClick={pause}
@@ -38,7 +38,7 @@ const Player = () => {
               alt=""
             />
           )}
-          <img className="w-4 cursor-pointer" src={assets.next_icon} alt="" />
+          <img onClick={next} className="w-4 cursor-pointer" src={assets.next_icon} alt="" />
           <img className="w-4 cursor-pointer" src={assets.loop_icon} alt="" />
         </div>
         <div className="felx item-center gap-5">
