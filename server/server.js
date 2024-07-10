@@ -4,6 +4,7 @@ import 'dotenv/config'
 import songRouter from './src/routes/songRoute.js';
 import connectDB from './src/config/mongodb.js';
 import connectCloudinary from './src/config/cloudinary.js';
+import albumRouter from './src/routes/albumRouter.js';
 
 // Initialize the app
 const app = express();
@@ -17,6 +18,8 @@ app.use(cors());
 
 // initializing routes
 app.use("/api/song",songRouter)
+app.use("/api/album",albumRouter)
+
 
 // Define a simple route
 app.get('/', (req, res) => {
