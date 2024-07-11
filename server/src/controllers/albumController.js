@@ -5,7 +5,7 @@ const addAlbum = async (req, res) => {
   try {
     const name = req.body.name;
     const desc = req.body.desc;
-    const bgColor = req.body.bgColor;
+    const bgColour = req.body.bgColour;
     const imageFile = req.file;
     const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
       resource_type: 'image',
@@ -14,7 +14,7 @@ const addAlbum = async (req, res) => {
     const albumData = {
       name,
       desc,
-      bgColor,
+      bgColour,
       image: imageUpload.secure_url,
     };
 
@@ -38,10 +38,24 @@ const listAlbum = async (req, res) => {
 
 const removeAlbum = async (req, res) => {
   try {
+    const album = await albumModel.findById(req.body.id);
+    if (!album) {
+      return res.json({ success: false, message: 'Album not found' });
+    }
+
+    // Extract the public ID from the Cloudinary URL
+    const imageUrl = album.image;
+    const publicId = imageUrl.split('/').pop().split('.')[0];
+
+    // Delete the image from Cloudinary
+    await cloudinary.uploader.destroy(publicId);
+
+    // Delete the album from the database
     await albumModel.findByIdAndDelete(req.body.id);
+
     res.json({ success: true, message: 'Album removed' });
   } catch (error) {
-    res.json({ success: false });
+    res.json({ success: false, message: error.message });
   }
 };
 

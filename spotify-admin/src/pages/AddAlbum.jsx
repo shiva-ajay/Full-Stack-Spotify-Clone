@@ -5,7 +5,6 @@ import { url } from "../App";
 import { toast } from "react-toastify";
 
 const AddAlbum = () => {
-
   const [image, setImage] = useState(false);
   const [colour, setColour] = useState("#121212");
   const [name, setName] = useState("");
@@ -18,36 +17,42 @@ const AddAlbum = () => {
     try {
       const formData = new FormData();
       formData.append("name", name);
-      formData.append('desc', desc);
-      formData.append('image', image);
-      formData.append('bgColor', colour);
+      formData.append("desc", desc);
+      formData.append("image", image);
+      formData.append("bgColour", colour); 
   
       const response = await axios.post(`${url}/api/album/add`, formData);
   
       if (response.data.success) {
-      toast.success("Album added");
-      setDesc("");
-      setImage(false);
-      setName("");
+        toast.success("Album added");
+        setDesc("");
+        setImage(false);
+        setName("");
+        setColour("#121212");
       } else {
-        toast.error('Failed to add album:', response.data.message);
+        toast.error("Failed to add album: " + response.data.message);
       }
     } catch (error) {
-      toast.error('Error adding album:', error.message);
+      toast.error("Error adding album: " + error.message);
     }
     setLoading(false);
-  }
-  
+  };
 
   return loading ? (
     <div className="grid place-items-center min-h-[80vh]">
       <div className="w-16 h-16 place-self-center border-4 border-gray-400 border-t-green-800 rounded-full animate-spin"></div>
     </div>
-  ) :  (
+  ) : (
     <form onSubmit={onSubmitHandler} className="flex flex-col items-start gap-8 text-gray-600">
       <div className="flex flex-col gap-4">
         <p>Upload Image</p>
-        <input onChange={(e)=>setImage(e.target.files[0])} type="file" id="image" accept="image/*" hidden />
+        <input 
+          onChange={(e) => setImage(e.target.files[0])} 
+          type="file" 
+          id="image" 
+          accept="image/*" 
+          hidden 
+        />
         <label htmlFor="image">
           <img
             className="w-24 cursor-pointer"
@@ -60,7 +65,7 @@ const AddAlbum = () => {
       <div className="flex flex-col gap-2.5">
         <p>Album Name</p>
         <input
-        onChange={(e)=>setName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
           className="bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]"
           type="text"
           value={name}
@@ -71,8 +76,8 @@ const AddAlbum = () => {
       <div className="flex flex-col gap-2.5">
         <p>Album Description</p>
         <input
-        onChange={(e)=>setDesc(e.target.value)}
-        value={desc}
+          onChange={(e) => setDesc(e.target.value)}
+          value={desc}
           className="bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]"
           type="text"
           placeholder="Type here"
@@ -81,7 +86,11 @@ const AddAlbum = () => {
 
       <div className="flex flex-col gap-3">
         <p>Background Colour</p>
-        <input onChange={(e)=>setColour(e.target.value)} value={colour} type="color" />
+        <input 
+          onChange={(e) => setColour(e.target.value)} 
+          value={colour} 
+          type="color" 
+        />
       </div>
 
       <button

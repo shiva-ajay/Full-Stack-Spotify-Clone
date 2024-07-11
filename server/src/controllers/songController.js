@@ -47,10 +47,27 @@ const listSong = async (req, res) => {
 
 const removeSong = async (req, res) => {
   try {
+    const song = await songModel.findById(req.body.id);
+    if (!song) {
+      return res.json({ success: false, message: "Song not found" });
+    }
+
+    // Extract the public IDs from the Cloudinary URLs
+    const audioUrl = song.file;
+    const imageUrl = song.image;
+    const audioPublicId = audioUrl.split('/').pop().split('.')[0];
+    const imagePublicId = imageUrl.split('/').pop().split('.')[0];
+
+    // Delete the audio and image files from Cloudinary
+    await cloudinary.uploader.destroy(audioPublicId, { resource_type: "video" });
+    await cloudinary.uploader.destroy(imagePublicId, { resource_type: "image" });
+
+    // Delete the song from the database
     await songModel.findByIdAndDelete(req.body.id);
+
     res.json({ success: true, message: "Song removed" });
   } catch (error) {
-    res.json({ success: false });
+    res.json({ success: false, message: error.message });
   }
 };
 
