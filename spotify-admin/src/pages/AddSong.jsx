@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { assets } from "../assets/assets";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { url } from "../App";
 
 const AddSong = () => {
   const [image, setImage] = useState(false);
@@ -36,7 +37,7 @@ const AddSong = () => {
         toast.error("Something went wrong")
         }
     } catch (error) {
-      toast.error("Error Occured")
+      toast.error('Error fetching songs: ' + error);
     }
     setLoading(false);
   };
