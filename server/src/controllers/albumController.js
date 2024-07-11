@@ -23,7 +23,7 @@ const addAlbum = async (req, res) => {
 
     res.json({ success: true, message: 'Album Added' });
   } catch (error) {
-    res.json({ success: false });
+    res.json({ success: false  + error });
   }
 };
 
